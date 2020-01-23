@@ -1,0 +1,42 @@
+---
+title: "Practice_w2_2"
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+course.grades<-c(76,97,68,92,88,56,90,8)
+course.grades
+
+students <-c('A','B','C','D','E','F','G','H')
+names(course.grades)<- students
+course.grades
+min(course.grades)
+
+grade.range<-cut(course.grades,3)
+table(grade.range)
+summary(course.grades)
+course.grades[course.grades<60]
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
