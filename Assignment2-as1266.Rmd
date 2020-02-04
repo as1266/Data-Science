@@ -1,0 +1,87 @@
+---
+title: "INFO 3010 - Assignment 2"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Spring 2020 by Lingzi Hong
+## Due: Monday, Feb 3, 2020
+### Instructions
+1. This is an R Markdown format used for publishing markdown documents to GitHub. When you click the **Knit** button, all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.
+2. Fill in the code chunks and submit this R markdown file to the assignment on Canvas. Make sure when you save that you have run all cells, so the outputs displace between the cells.
+3. make sure to replace the directoryID in the filename with your student ID. 
+
+
+### Q1 (5pts): Download the file 'Adults_Cleaned.csv' from canvas. Read the file into a dataframe.
+```{r}
+setwd('/Users/anime/Documents/Data science')
+adults<- read.csv('Adults_Cleaned.csv')
+```
+
+### Q2: (3pts) Write code to show first 5 lines of the dataset.
+```{r}
+
+head(adults,5)
+```
+
+### Q3: (3pts) How many samples are in the dataset? 
+```{r}
+
+nrow(adults)
+```
+
+### Q4: (4pts) Check the data types of each column.
+```{r}
+str(adults)
+
+
+```
+
+### Q5: (5pts) How many kinds of occupations are in the dataset?
+```{r}
+uni<-unique(adults[,7])
+length(uni)
+```
+
+### Q6: (5pts) A statistical summary of the dataset.
+```{r}
+summary(adults)
+```
+
+### Q7: (5pts) How many people have capital gain more than 0?
+```{r}
+nrow(adults[adults$capital.gain >"0",]) 
+
+```
+
+### Q8: (5pts) How many people work more than 40hrs a week?
+```{r}
+nrow(adults[adults$hours.per.week > 40,])
+
+```
+
+### Q9: (5pts) Number of people whose native country is Mexico and work more than 40hrs a week.
+```{r}
+nrow(adults[(adults$hours.per.week > 40) & (adults$native.country == "Mexico"),])
+```
+
+### Q10: (5pt) For people who have got bachelor education or higher, what the is percentage to have income more than 50K?
+```{r}
+more50work40<-nrow(adults[(adults$education.num >= 13 )&(adults$label=='>50K'),])
+educationOnly<-nrow(adults[(adults$education.num >= 13),])
+percent <- more50work40/educationOnly*100
+print(percent)
+
+```
+
+### Q11: (5pts) What is the average woking hours per week for people who are husband?
+```{r}
+
+HusbansMean<-mean(adults[adults["relationship"] == "Husband","hours.per.week"])
+print(HusbansMean)
+
+```
+
