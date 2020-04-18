@@ -1,0 +1,64 @@
+---
+title: "INFO 3010 - Assignment 7"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Spring 2020 by Lingzi Hong
+## Due: Monday, April 6, 2020
+### Instructions
+1. This is an R Markdown format used for publishing markdown documents to GitHub. When you click the **Knit** button, all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.
+2. Please download the snowstorm.json from canvas. Fill in the code chunks for following question and submit this R markdown file to the assignment on Canvas. Make sure when you save that you have run all cells, so the outputs displace between the cells.
+3. make sure to replace the directoryID in the filename with your student ID. 
+
+
+### Q1. (5pts) Read the file "2015.csv" to a dataframe. Have a statistical summary of the dataset. 
+```{r}
+library("ggplot2")
+setwd('/Users/anime/Documents/Data science' )
+
+dataf <- read.csv('2015.csv')
+```
+
+### Q2. (5pts) Draw a plot with box plot of Happiness_Score for countries in each Region group.
+```{r}
+head(dataf,20)
+
+
+
+h <- ggplot(data = dataf ,aes(x = Region, y=Happiness_Score))
+h + geom_boxplot()
+
+
+```
+
+### Q3. (10pts) Draw a scatter plot matrix for variables: Happiness_Score, Family, Life_Expectancy and Generosity
+```{r}
+d2 <- subset(dataf,select = c(Happiness_Score,Life_Expectancy,Generosity,Family))
+pairs(d2)
+
+```
+
+### Q4. (10pts) Build a linear regression model to predict Life_Expectancy with Hapiness_Score, GDP_per_Capita, Family and Government_Corruption. 
+```{r}
+model <- lm(Life_Expectancy~Happiness_Score+GDP_per_Capita+ Family+ Government_Corruption, data =train)
+```
+
+
+### Q6. (10pts) Check model details. Answer the following questions out of code box: What is the adjusted R-squared value? Is the linear relation significant? 
+A: Since the p-valuse is at 0.403 I would say that the the linear relation is not significant because it's greater than .05 which means it is not significant.The adjusted R-squared value is about .05584.
+
+```{r}
+summary(model)
+
+```
+
+### Q7. (10pts) Draw diagnostic plots for the model in Q6. 
+```{r}
+layout(matrix(c(1,2,3,4),2,2))
+plot(model)
+```
+

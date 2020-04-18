@@ -1,0 +1,72 @@
+---
+title: "INFO 3010 - Assignment 6"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Spring 2020 by Lingzi Hong
+## Due: Monday, Mar 23, 2020
+### Instructions
+1. This is an R Markdown format used for publishing markdown documents to GitHub. When you click the **Knit** button, all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.
+2. Please download the snowstorm.json from canvas. Fill in the code chunks for following question and submit this R markdown file to the assignment on Canvas. Make sure when you save that you have run all cells, so the outputs displace between the cells.
+3. make sure to replace the directoryID in the filename with your student ID. 
+4. You can get 5 bonus points for using ggplot2 package.
+
+
+### Q1. (5pts) Download the 'HousePrice.csv' dataset. Read the dataset to a dataframe. Check the structure of the dataframe.
+```{r}
+library(streamR)
+library(tm)
+library(wordcloud)
+library(ggplot2)
+
+
+
+setwd('/Users/anime/Documents/Data science' )
+df<- read.csv('HousePrice.csv')
+df
+```
+
+### Q2. (5pts) Draw a histogram to check the distribution of house price.
+```{r}
+price <- df$Price
+hist(price)
+
+```
+
+### Q3. (5pts) Draw a density plot to check the distribution of Sqft_Area of houses. 
+```{r}
+ggplot(df) + geom_density(mapping = aes(df$Sqft_Area))
+```
+
+### Q4. 1) (5pts) Get a subset of data with postal code as "98178","98146" and "98118".  2) (10pts) Draw a scatter plot with the subset data. It has Sqft_Area in x-axis, Price in y-axis. The dots are colored by postal code.  
+```{r}
+
+subData <- df[(df$Postal == "98178") & (df$Postal == "98146") & (df$Postal == "98118"),]
+ggplot(df, aes(Sqft_Area,Price))+geom_point()
+```
+
+
+### Q6. (10pts) Randomly choose a dataset you are interested. You may also keep using the hourseprice dataset. Draw a scatter plot matrix. What do you find? Write 2-3 sentences about your finding. Remember to write the sentences outside of code chunk.
+
+Answer-I found that areas with a higher crime rate tend to not have an increase in price. I separated the data in different years and found that prices of houses in the postal code "98106" are relatively the same. The crime rates tend to leave the price of houses the same.They do not increase over time, some points even suggest that they decrease over time
+
+```{r}
+df2 <- df[(df$Postal ==  "98106")&(df$Built_Year >  "1970"),]
+
+ggplot(df2)+ geom_point(mapping = aes(x = Crime, y =Price))+facet_wrap(~Built_Year)
+
+
+```
+
+### Q7. (10pts) Draw a line plot with the chosen dataset. What do you find? Write 2-3 sentences about your finding.
+
+Answer- The line plot also suggests the same findings as my scatter plot matrix. We see that while the price fluxated over time between high ends and low points, they stayed in relatively the same price points. We had some outliers at some points in time however throughout the years most of the points were in the same price zone.I would infer based on the data that prices will drop further for the houses in the future if crime rates do not decrease.
+```{r}
+df2 <- df[(df$Postal ==  "98106")&(df$Built_Year >  "1970"),]
+ggplot(df2,aes(x = Crime, y =Price))+ geom_point()+geom_line()
+```
+

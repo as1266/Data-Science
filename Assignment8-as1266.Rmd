@@ -1,0 +1,86 @@
+---
+title: "INFO 3010 - Assignment 8"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Spring 2020 by Lingzi Hong
+## Due: Monday, April 13, 2020
+### Instructions
+1. This is an R Markdown format used for publishing markdown documents to GitHub. When you click the **Knit** button, all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.
+2. Please download the snowstorm.json from canvas. Fill in the code chunks for following question and submit this R markdown file to the assignment on Canvas. Make sure when you save that you have run all cells, so the outputs displace between the cells.
+3. make sure to replace the directoryID in the filename with your student ID. 
+
+
+### Q1. (5pts)  Create a function that can convert fahrenheit to celsius. The formula is (F-32)*5/9 = C. Fill in the function body. There is a test case to convert fahrenheit 86 to celsius. 
+```{r}
+fahrenheit_to_celcius <- function(tempf){
+  tempc <- (tempf-32)*5/9
+  return(tempc)
+}
+fahrenheit_to_celcius(86)
+```
+
+### Q2. (5pts) Read the file '2016.csv' to a dataframe. Check the first 5 lines of the data. 
+```{r}
+library("ggplot2")
+setwd('/Users/anime/Documents/Data science' )
+
+dataf <- read.csv('2016.csv')
+
+head(dataf,5)
+```
+
+### Q3. (5pts) Use the dataframe in Q3. Compute the average Hapiness_Score for countries in North America. 
+```{r}
+naHappy <- dataf[(dataf$Region == 'North America'),]
+naHappy
+mean(naHappy$Happiness_Score)
+```
+
+### Q4. (5pts) Use the dataframe in Q3. Write code to compute the difference in Generosity between United States and Mexico.
+```{r}
+UnitedStates <- naHappy[(naHappy$Country == 'United States'),]
+Mexico <- dataf[(dataf$Country == 'Mexico'),]
+difference = (UnitedStates$Generosity)-(Mexico$Generosity)
+
+difference
+```
+
+### Q5. (5pts) Use the dataframe in Q3. Plot the dataframe columns Happiness_Rank and Happiness_Score as a line graph
+
+```{r}
+happinessLine <- ggplot(data = naHappy ,aes(x = Happiness_Score, y=Happiness_Rank))
+happinessLine+geom_line()
+```
+
+### Q6. (5pts) Use the dataframe in Q3. Plot the scatter plot matrix for the four variables: Family, Life_Expectancy,Freedom, Generosity
+```{r}
+scatterPlot <- subset(naHappy,select = c(Family,Life_Expectancy,Freedom,Generosity))
+pairs(scatterPlot)
+```
+
+### Q7. (5pts) Get a subset of data with countries from Region of "Western Europe" and "North America" and "Eastern Asia".
+```{r}
+subsetdataf <- dataf[(dataf$Region == "Western Europe")| (dataf$Region == "North America") | (dataf$Region == "Eastern A"),]
+head(subsetdataf,20)
+```
+### Q8. (5pts) Use the subset data in Q8. Draw a scatter plot with Government_Corruption in the x-axis, Freedom in the y-axis, and the points are colored by region. 
+```{r}
+scatter <- ggplot(subsetdataf)+geom_point(mapping = aes(x = Government_Corruption,y= Freedom,color = Region))
+scatter
+```
+
+### Q9. (5pts) Build a linear regression model: predict Happiness_Score with variables GDP_per_Capita, Family, Life_Expectancy and Freedom. 
+```{r}
+Happinessmodel <- lm(Happiness_Score~GDP_per_Capita+ Family+ Life_Expectancy+Freedom , data =train)
+```
+### Q10. (5pts) Get a summary of the model. Answer the following questions out of the code chunk: what is the adjusted R-squared? What is the coefficient of GDP_per_Capita?
+
+A: Based on what i see the adjusted R-Squared is 0.7461 and the coefficients of GDP_per_Capita is 1.4891 for Estimated Standard deviation, error is 0.6435, t value is 2.315 and Pr(>|t|) is 0.0538.
+```{r}
+summary(Happinessmodel)
+```
